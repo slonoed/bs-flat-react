@@ -8,6 +8,7 @@ let controledInput = () => {
   let (value, setValue) = Hook.useState("test");
   Hook.useEffect(() => Js.log(value));
   let onChange = event => setValue(FReact.Event.Form.target(event)##value);
+
   Element.(div([input(~value, ~onChange, []), span([str(value)])]));
 };
 
@@ -15,6 +16,7 @@ let withUseEffect = () => {
   let (value, setValue) = Hook.useState("Examples");
   Hook.useEffect(() => setTitle(value));
   let onChange = event => setValue(Event.Form.target(event)##value);
+
   Element.(
     div([
       str("Change document title: "),
@@ -37,6 +39,7 @@ let btn = p1 => {
     | Secondary => "btn-secondary"
     };
   let children = FReact.extractChildren(p1);
+
   Element.button(~className=cls, ~ariaSetsize=12, [children]);
 };
 
@@ -49,11 +52,13 @@ let examples: list((string, FReact.reactElement)) =
     ("Secondary button", r(btn, {kind: Secondary}, [str("click me")])),
   ];
 
-/* Rendering */
+/* Examples render */
+
 type exampleProps = {title: string};
 
 let exampleWrapper = p1 => {
   let children = FReact.extractChildren(p1);
+
   Element.(
     div(~className="example", [h3([str(p1.title)]), children, hr([])])
   );
