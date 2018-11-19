@@ -1,7 +1,10 @@
 module Event = FReact_Event;
+module Style = FReact_Style;
+module Hook = FReact_Hook;
 
 type t;
-type style = Js.Dict.t(string);
+type style = Style.t;
+type domRef = Hook.DomRef.t;
 
 let rawCreateElement = (cmp, props, children: array(t)): t => [%raw
   "require('react').createElement(cmp, props, ...children)"
@@ -10,8 +13,10 @@ let rawCreateElement = (cmp, props, children: array(t)): t => [%raw
 module Props = {
   [@bs.deriving abstract]
   type t = {
-    /*[@bs.optional] key: string,*/
-    /*[@bs.optional] ref: Js.nullable(Dom.element) => unit,*/
+    [@bs.optional]
+    key: string,
+    [@bs.optional] [@bs.as "ref"]
+    ref_: domRef,
     /* accessibility */
     /* https://www.w3.org/TR/wai-aria-1.1/ */
     /* https://accessibilityresources.org/<aria-tag> is a great resource for these */
@@ -1003,6 +1008,8 @@ module Props = {
 let create =
     (
       tag: string,
+      ~key: option(string)=?,
+      ~ref_: option(domRef)=?,
       ~ariaDetails: option(string)=?,
       ~ariaDisabled: option(bool)=?,
       ~ariaHidden: option(bool)=?,
@@ -1479,6 +1486,8 @@ let create =
     ) => {
   let props =
     Props.make(
+      ~ref_?,
+      ~key?,
       ~ariaDetails?,
       ~ariaDisabled?,
       ~ariaHidden?,
@@ -2011,6 +2020,7 @@ let i = create("i");
 let iframe = create("iframe");
 let img = create("img");
 let input = create("input");
+let input_ = create("input"); /* Alias to prevent hiding ocaml "input" function*/
 let ins = create("ins");
 let kbd = create("kbd");
 let keygen = create("keygen");

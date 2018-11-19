@@ -8,3 +8,10 @@ let useEffect = effect =>
     effect();
     Js.undefined;
   });
+
+module DomRef = {
+  [@bs.deriving abstract]
+  type t = {current: option(Dom.node)};
+};
+
+[@bs.module "react"] external useDomRef: unit => DomRef.t = "useRef";
