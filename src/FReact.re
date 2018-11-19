@@ -1,6 +1,5 @@
 type reactElement = FReact_Element.t;
 
-/* Public React API */
 /* create element from component */
 let createElement:
   ('p => reactElement, 'p, list(reactElement)) => reactElement =
@@ -25,7 +24,4 @@ module Element = {
   let r = createElement;
 };
 
-let extractChildren = a: Element.t => {
-  let l = [%raw "a.children"];
-  l;
-};
+let extractChildren = Element.extractChildren;

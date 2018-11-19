@@ -2,14 +2,14 @@ module Hook = FReact.Hook;
 module Event = FReact.Event;
 module Element = FReact.Element;
 
-let setTitle = title => [%raw "document.title = title"];
+let setTitle: string => unit = [%raw "function(t){document.title = t}"];
 
 let controledInput = () => {
   let (value, setValue) = Hook.useState("test");
   Hook.useEffect(() => Js.log(value));
   let onChange = event => setValue(FReact.Event.Form.target(event)##value);
 
-  Element.(div([input(~value, ~onChange, []), span([str(value)])]));
+  Element.(div([input_(~value, ~onChange, []), span([str(value)])]));
 };
 
 let withUseEffect = () => {
@@ -20,7 +20,7 @@ let withUseEffect = () => {
   Element.(
     div([
       str("Change document title: "),
-      input(~value, ~onChange, []),
+      input_(~value, ~onChange, []),
       h3(~className="tagged", [span([str("YES")])]),
     ])
   );

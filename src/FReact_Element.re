@@ -2101,6 +2101,13 @@ let text = create("text");
 let tspan = create("tspan");
 
 /* Render plain text */
-let str: string => t = [%raw {|
-    (a => a)
-|}];
+external str: string => t = "%identity";
+
+/* Extract children from reason props */
+module ReactProps = {
+  [@bs.deriving abstract]
+  type props = {children: t};
+  external fromProps: 'a => props = "%identity";
+};
+let extractChildren = props =>
+  props |> ReactProps.fromProps |> ReactProps.childrenGet;

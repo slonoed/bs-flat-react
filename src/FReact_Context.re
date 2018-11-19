@@ -31,22 +31,12 @@ module Make = (Value: Value) => {
 
   [@bs.module "react"] external useContext: context => Value.t = "useContext";
 
-  /* XXX*/
-  let extractChildren = a: Element.t => {
-    let l = [%raw "a.children"];
-    l;
-  };
-
   /* API */
   let provider = props => {
     let provider = context |> providerGet;
     let pprops = ProviderProps.t(~value=props.value);
-    let children = extractChildren(props);
-    FReact_Element.rawCreateElement(
-      provider,
-      pprops,
-      Array.of_list([children]),
-    );
+    let children = Element.extractChildren(props);
+    Element.rawCreateElement(provider, pprops, Array.of_list([children]));
   };
   let use = () => useContext(context);
 };
