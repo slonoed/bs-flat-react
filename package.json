@@ -1,5 +1,6 @@
 {
   "name": "@slonoed/bs-flat-react",
+  "description": "Bucklescript binding to React with limited API",
   "version": "0.1.0",
   "scripts": {
     "build": "bsb -make-world",

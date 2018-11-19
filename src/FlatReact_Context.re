@@ -1,4 +1,4 @@
-module Element = FReact_Element;
+module Element = FlatReact_Element;
 
 module type Value = {
   type t;

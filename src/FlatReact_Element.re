@@ -1,6 +1,6 @@
-module Event = FReact_Event;
-module Style = FReact_Style;
-module Hook = FReact_Hook;
+module Event = FlatReact_Event;
+module Style = FlatReact_Style;
+module Hook = FlatReact_Hook;
 
 type t;
 type style = Style.t;

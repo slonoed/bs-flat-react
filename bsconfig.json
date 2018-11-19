@@ -1,10 +1,16 @@
 {
   "name": "@slonoed/bs-flat-react",
   "version": "0.1.0",
-  "sources": {
-    "dir" : "src",
-    "subdirs" : true
-  },
+  "sources": [
+    {
+      "dir" : "src",
+      "subdirs" : true
+    },
+    {
+      "dir": "examples",
+      "type": "dev"
+    }
+  ],
   "package-specs": {
     "module": "commonjs",
     "in-source": false
@@ -14,6 +20,6 @@
   "warnings": {
     "error" : "+101"
   },
-  "namespace": true,
+  "namespace": false,
   "refmt": 3
 }

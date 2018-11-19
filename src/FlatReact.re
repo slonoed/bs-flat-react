@@ -1,10 +1,10 @@
-type reactElement = FReact_Element.t;
+type reactElement = FlatReact_Element.t;
 
 /* create element from component */
 let createElement:
   ('p => reactElement, 'p, list(reactElement)) => reactElement =
   (foo, p, children) =>
-    FReact_Element.rawCreateElement(foo, p, Array.of_list(children));
+    FlatReact_Element.rawCreateElement(foo, p, Array.of_list(children));
 
 module Dom = {
   [@bs.module "react-dom"]
@@ -13,14 +13,14 @@ module Dom = {
   external hydrate: (reactElement, 'a) => unit = "hydrate";
 };
 
-module Event = FReact_Event;
+module Event = FlatReact_Event;
 
-module Hook = FReact_Hook;
+module Hook = FlatReact_Hook;
 
-module Context = FReact_Context;
+module Context = FlatReact_Context;
 
 module Element = {
-  include FReact_Element;
+  include FlatReact_Element;
   let r = createElement;
 };
 

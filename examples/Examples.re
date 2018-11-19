@@ -1,13 +1,14 @@
-module Hook = FReact.Hook;
-module Event = FReact.Event;
-module Element = FReact.Element;
+module Hook = FlatReact.Hook;
+module Event = FlatReact.Event;
+module Element = FlatReact.Element;
 
 let setTitle: string => unit = [%raw "function(t){document.title = t}"];
 
 let controledInput = () => {
   let (value, setValue) = Hook.useState("test");
   Hook.useEffect(() => Js.log(value));
-  let onChange = event => setValue(FReact.Event.Form.target(event)##value);
+  let onChange = event =>
+    setValue(FlatReact.Event.Form.target(event)##value);
 
   Element.(div([input_(~value, ~onChange, []), span([str(value)])]));
 };
@@ -38,7 +39,7 @@ let btn = p1 => {
     | Primary => "btn-primary"
     | Secondary => "btn-secondary"
     };
-  let children = FReact.extractChildren(p1);
+  let children = FlatReact.extractChildren(p1);
 
   Element.button(~className=cls, ~ariaSetsize=12, [children]);
 };
@@ -68,7 +69,7 @@ type theme =
   | Dark;
 
 module MyContext =
-  FReact.Context.Make({
+  FlatReact.Context.Make({
     type t = theme;
     let defaultValue = Some(Dark);
   });
@@ -104,8 +105,8 @@ let withContext = () => {
   );
 };
 
-let examples: list((string, FReact.reactElement)) =
-  FReact.Element.[
+let examples: list((string, FlatReact.reactElement)) =
+  FlatReact.Element.[
     ("Hello, world", str("Hello, world!")),
     ("Controled input", r(controledInput, (), [])),
     ("useEffect", r(withUseEffect, (), [])),
@@ -121,14 +122,14 @@ let examples: list((string, FReact.reactElement)) =
 type exampleProps = {title: string};
 
 let exampleWrapper = p1 => {
-  let children = FReact.extractChildren(p1);
+  let children = FlatReact.extractChildren(p1);
 
   Element.(
     div(~className="example", [h3([str(p1.title)]), children, hr([])])
   );
 };
 
-type containerProps = {examples: list((string, FReact.reactElement))};
+type containerProps = {examples: list((string, FlatReact.reactElement))};
 
 let container = p1 => {
   let mapper = ((title, ex)) =>
@@ -139,4 +140,7 @@ let container = p1 => {
 
 let target = [%raw "document.getElementById('app')"];
 
-FReact.Dom.render(Element.r(container, {examples: examples}, []), target);
+FlatReact.Dom.render(
+  Element.r(container, {examples: examples}, []),
+  target,
+);
