@@ -18,6 +18,8 @@ module Event = FReact_Event;
 
 module Hook = FReact_Hook;
 
+module Context = FReact_Context;
+
 module Element = {
   include FReact_Element;
   let r = createElement;

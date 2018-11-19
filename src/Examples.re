@@ -63,6 +63,47 @@ let withRef = () => {
   );
 };
 
+type theme =
+  | Light
+  | Dark;
+
+module MyContext =
+  FReact.Context.Make({
+    type t = theme;
+    let defaultValue = Some(Dark);
+  });
+
+type withContextChildProps = {text: string};
+let withContextChild = props => {
+  let theme = MyContext.use();
+  let innerText =
+    switch (theme) {
+    | Light => "light fun theme "
+    | Dark => "dark cool theme"
+    };
+
+  Element.(div([str(props.text ++ ": " ++ innerText)]));
+};
+
+let withContext = () => {
+  let (theme, setTheme) = Hook.useState(Dark);
+  let onClick = _ => setTheme(theme === Dark ? Light : Dark);
+
+  Element.(
+    div([
+      r(
+        MyContext.provider,
+        {value: theme},
+        [
+          str("Themed"),
+          r(withContextChild, {text: "Should be themed"}, []),
+          button(~onClick, [str("Change theme")]),
+        ],
+      ),
+    ])
+  );
+};
+
 let examples: list((string, FReact.reactElement)) =
   FReact.Element.[
     ("Hello, world", str("Hello, world!")),
@@ -72,6 +113,7 @@ let examples: list((string, FReact.reactElement)) =
     ("Secondary button", r(btn, {kind: Secondary}, [str("click me")])),
     ("With keys", r(withKeys, (), [])),
     ("With ref", r(withRef, (), [])),
+    ("With context", r(withContext, (), [])),
   ];
 
 /* Examples render */
