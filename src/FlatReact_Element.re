@@ -6,8 +6,8 @@ type t;
 type style = Style.t;
 type domRef = Hook.DomRef.t;
 
-let rawCreateElement = (cmp, props, children: array(t)): t => [%raw
-  "require('react').createElement(cmp, props, ...children)"
+let rawCreateElement = (_cmp, _props, _children: array(t)): t => [%raw
+  "require('react').createElement(_cmp, _props, ..._children)"
 ];
 
 module Props = {
