@@ -8,9 +8,12 @@
     "clean": "bsb -clean-world"
   },
   "keywords": [
-    "BuckleScript"
+    "BuckleScript",
+    "React",
+    "ReasonML"
   ],
-  "author": "",
+  "homepage": "https://github.com/slonoed/bs-flat-react#readme",
+  "author": "Dmitry Manannikov <email@slonoed.net> (https://slonoed.net)",
   "license": "MIT",
   "devDependencies": {
     "bs-platform": "^4.0.7"
