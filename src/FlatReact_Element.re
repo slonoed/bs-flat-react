@@ -6,9 +6,22 @@ type t;
 type style = Style.t;
 type domRef = Hook.DomRef.t;
 
-let rawCreateElement = (cmp, props, children: array(t)) : t => [%raw
-  "require('react').createElement(cmp, props, ...children)"
+type extCmp;
+type extProps;
+
+external toExtCmp: 'a => extCmp = "%identity";
+external toExtProps: 'a => extProps = "%identity";
+
+let internalCall: (extCmp, extProps, array(t)) => t = [%raw
+  {|
+  function(cmp, props, children) {
+    return require('react').createElement.apply(null, [cmp, props].concat(children))
+  }
+|}
 ];
+
+let rawCreateElement = (cmp, props, children: array(t)): t =>
+  internalCall(toExtCmp(cmp), toExtProps(props), children);
 
 module Props = {
   [@bs.deriving abstract]
@@ -482,7 +495,7 @@ module Props = {
     [@bs.optional]
     onWaiting: Event.Media.t => unit,
     /* Image events */
-    [@bs.optional] onLoad: Event.Image.t => unit /* duplicate */, /*~onError: Event.Image.t => unit=?,*/
+    [@bs.optional]onLoad: Event.Image.t => unit /* duplicate */, /*~onError: Event.Image.t => unit=?,*/
     /* Animation events */
     [@bs.optional]
     onAnimationStart: Event.Animation.t => unit,
@@ -2101,13 +2114,13 @@ let text = create("text");
 let tspan = create("tspan");
 
 /* Render plain text */
-external str : string => t = "%identity";
+external str: string => t = "%identity";
 
 /* Extract children from reason props */
 module ReactProps = {
   [@bs.deriving abstract]
   type props = {children: t};
-  external fromProps : 'a => props = "%identity";
+  external fromProps: 'a => props = "%identity";
 };
 let extractChildren = props =>
   props |> ReactProps.fromProps |> ReactProps.childrenGet;
